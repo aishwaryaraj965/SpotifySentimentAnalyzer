@@ -257,10 +257,46 @@ def sentiment_to_color(compound):
         return "red"
     else:
         return "gray"
+# ----------------------------------------
+# 🔮 Personality Test
+# ----------------------------------------
+def predict_mbti_from_sentiment(df):
+    if df.empty:
+        return "Unknown"
+
+    avg_compound = df['compound'].mean()
+    avg_positive = df['positive'].mean()
+    avg_negative = df['negative'].mean()
+    avg_neutral = df['neutral'].mean()
+
+    # Map sentiment to MBTI dimensions using a simple heuristic
+    # This is creative + symbolic, not clinical 😄
+
+    # I/E: High energy → E, introspective → I
+    ie = 'E' if avg_positive > 0.4 and avg_compound > 0.3 else 'I'
+
+    # S/N: Balanced sentiment → S, extreme sentiment swings → N
+    sn = 'N' if abs(avg_positive - avg_negative) > 0.3 else 'S'
+
+    # T/F: More positivity → F, more neutrality or bluntness → T
+    tf = 'F' if avg_positive > avg_negative else 'T'
+
+    # J/P: Neutral + mood shifts → P (flexible), steady positivity/negativity → J
+    jp = 'P' if avg_neutral > 0.5 else 'J'
+
+    mbti = f"{ie}{sn}{tf}{jp}"
+
+    print(f"🧬 Predicted MBTI: {mbti}")
+    return mbti
 
 
 
 
+#testing pipeline 
+# def main():
+#     df = pd.read_csv("top_100_lyrics_vader_sentiment.csv")
+#     mbti = predict_mbti_from_sentiment(df)
+#     print(f"🧠 Based on your musical mood, you're probably a {mbti}!")
 
 # Main pipeline
 def main():
@@ -276,6 +312,8 @@ def main():
          generate_mood_wheel(df)
          genre_list = extract_genres(tracks)
          generate_genre_wheel(genre_list)
+         mbti = predict_mbti_from_sentiment(df)
+         print(f"🧠 Based on your musical mood, you're probably a {mbti}!")
      else:
          print("⚠️ No lyrics found for any tracks.")
 
