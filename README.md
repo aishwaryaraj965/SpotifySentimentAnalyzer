@@ -15,6 +15,8 @@ Using sentiment analysis on song lyrics, the project reveals:
   🔁 Pulls your Top 100 Spotify tracks (last 6 months)
   
   🧠 Uses VADER sentiment analysis on lyrics via Genius API
+
+  🔮 Provides MBTI personality analysis based on sentiments
   
   🎨 Generates expressive visualizations:
   
